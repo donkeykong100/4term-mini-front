@@ -7,6 +7,7 @@ import MainPage from "./pages/MainPage";
 import Explore from "./pages/Explore";
 import UserPage from "./pages/UserPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
+import PostPage from "./pages/PostPage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/main" element={<MainPage />}></Route>
       <Route path="/:nickname" element={<UserPage />}></Route>
       <Route path="/edit" element={<ProfileEditPage />}></Route>
+      <Route path="/p/:postNo" element={<PostPage />}></Route>
     </Routes>
   );
 }

@@ -3,7 +3,7 @@ import DetailsForm from "./DetailsForm";
 import { Content } from "../../styles/ProfileEditPage/EditContentStyle";
 import { useState, useEffect } from "react";
 import axios from "../../api/config";
-import { getUserNickname, getUserNo } from "./../../utils/getToken";
+import { getToken, getUserNickname, getUserNo } from "./../../utils/getToken";
 import { useNavigate } from "react-router-dom";
 
 function EditContent() {
@@ -12,6 +12,7 @@ function EditContent() {
   const [img, setImg] = useState(null);
   const nav = useNavigate();
 
+  const token = getToken();
   const userNo = getUserNo();
   const userNickname = getUserNickname();
 
@@ -21,7 +22,7 @@ function EditContent() {
       setNickname(res.data.userInfo.nickname);
       setImg(res.data.userInfo.profile_image);
     });
-  }, [userNo]);
+  }, [userNo, token]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -43,6 +44,7 @@ function EditContent() {
         console.error(err);
       });
   };
+
   return (
     <>
       {userData ? (

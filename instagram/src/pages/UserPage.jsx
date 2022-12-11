@@ -6,9 +6,11 @@ import { Container, PageContainer } from "../styles//UserPage/UserPageStyle";
 import { useState, useEffect } from "react";
 import axios from "../api/config";
 import { getUserNickname, getUserNo } from "../utils/getToken";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 function UserPage() {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   let { nickname } = useParams();
   const userNo = getUserNo();
   const userNickname = getUserNickname();
@@ -16,6 +18,10 @@ function UserPage() {
   const [postData, setPostData] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (pathname === "/undefined") navigate("/main");
+  }, [navigate, pathname]);
 
   useEffect(() => {
     if (nickname === userNickname) setIsMyPage(true);
