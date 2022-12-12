@@ -17,6 +17,7 @@ const PostPage = () => {
   const [value, setValue] = useState("");
   const [myInfo, setMyInfo] = useState({});
   const scrollRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     (async () => {
@@ -66,13 +67,14 @@ const PostPage = () => {
       ]);
       setValue("");
       alert(data.msg);
-      scrollRef?.current?.scrollIntoView({});
+      scrollRef?.current?.scrollIntoView({ block: "end" });
     } catch (error) {
       catchGlobalError(error) || alert(error.message);
     }
   };
 
   const delComment = async (commentNo) => {
+    if (!window.confirm("댓글을 삭제하시겠습니까?")) return;
     try {
       const { data } = await axios.delete(`comment`, {
         params: {
@@ -95,13 +97,18 @@ const PostPage = () => {
     }
   };
 
-  console.log(comments);
+  const outsideClick = ({ target }) => {
+    if (!target || !containerRef.current) return;
+    if (!containerRef.current.contains(target)) window.history.back();
+    return;
+  };
+  console.log(containerRef.current);
 
   return (
     <>
       {post && writer && (
-        <PostWrapper>
-          <PostContainer>
+        <PostWrapper onClick={outsideClick}>
+          <PostContainer ref={containerRef}>
             <ImageContainer>
               <PostImage src={post.postData?.images[0]} />
             </ImageContainer>
@@ -138,11 +145,6 @@ const PostPage = () => {
                         <WriterNickname>{writer?.nickname}</WriterNickname>
                         <Content>{post.postData?.content}</Content>
                       </div>
-                      <CreatedDate>
-                        {dayjs(post.postData?.date).format(
-                          "YYYY년 MM월 DD일 HH:mm"
-                        )}
-                      </CreatedDate>
                     </div>
                   </Comment>
                   {comments.map((comment, index) => (
@@ -296,6 +298,16 @@ const CommentDiv = styled.div`
   flex-direction: column;
   max-height: calc(80vh - 180px);
   overflow: auto;
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const Comment = styled.div`
