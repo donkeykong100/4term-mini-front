@@ -27,15 +27,17 @@ function PostAfterSelect({ imgSrc, setShowModal, myProfileImg }) {
     const config = {
       headers: {
         "Content-Type": "multipart/form-data",
-        authorization: getToken(),
+        Authorization: getToken(),
       },
     };
 
     try {
       await axios.post(url, formData, config);
       setShowModal(false);
+      alert("사진이 업로드 되었습니다.");
       window.location.reload();
     } catch (err) {
+      alert(err.message);
       console.log(err);
     }
   };

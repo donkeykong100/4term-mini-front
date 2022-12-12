@@ -90,8 +90,6 @@ const PostPage = () => {
       } else {
         alert(data.msg);
       }
-
-      console.log(data);
     } catch (error) {
       catchGlobalError(error) || alert(error.message);
     }
@@ -102,7 +100,6 @@ const PostPage = () => {
     if (!containerRef.current.contains(target)) window.history.back();
     return;
   };
-  console.log(containerRef.current);
 
   return (
     <>
